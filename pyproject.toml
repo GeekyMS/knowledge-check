@@ -1,0 +1,59 @@
+# A build system is required to convert your code into a distributable package.
+# setuptools is the oldest and most common build tool, but we also like Poetry
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+# This is metadata about your project, which you should keep up to distributable
+[project]
+# The package name is important, as this is how you will import code functions
+# from the modules in streamlit_template_pkg
+name = "streamlit_template_pkg"
+version = "1.0.0"
+description = "A template for a simple python Streamlit application with multiple pages and data assets"
+readme = "README.md"
+
+# What version of python does your library work with?
+requires-python = ">=3.12,<3.15"
+
+# Metadata about your package in case you upload it to PYPI
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+# All the dependencies needed for running your module go here
+# Dependencies for running your application are read from requirements.txt
+# They could be listed in this file instead, but sometimes it is useful to have the
+# listed in a single file
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+# Extra dependencies only needed for running tests go here
+test = [
+    "pytest"
+]
+
+# Dependencies that are useful only to developers, like an autoformatter or linter.
+# These are necessary if you're changing the project code,
+# but not if you're just using or testing the library
+dev = [
+    "ruff",
+]
+
+# Configure setuptools to read dependencies from requirements.txt
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+# Explicitly specify which which folders to look for package files in
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["streamlit_template_pkg*"]
+exclude = ["data*", "tests*", "pages*"]
+
+# Add customizations to the Ruff linter as described on https://docs.astral.sh/ruff/configuration/
+[tool.ruff]
+# Override ruff's default so that lines aren't more than 120 characters
+line-length = 119
+extend-exclude = ["*.ipynb"]
